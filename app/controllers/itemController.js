@@ -5,7 +5,10 @@ const itemController = {
         try {
             // récupèrer les cartes
             const items = await Item.findAll({
-                include: 'category'
+                include: 'category',
+                order : [
+                    ['expirationdate', 'ASC'],
+                ],
             });
             // envoyer une réponse
             res.json(items);

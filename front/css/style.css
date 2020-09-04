@@ -8,12 +8,32 @@
     position: relative;
 }; */
 .table {
-    width: 1000px
+    width: 1000px;
+    height: 250px;
 }
+
+.warning {
+    background-color: #eab464;
+};
 .cell {
     text-align: center;
 }
+.danger {
+    background-color: #f64740
+};
 
 .fa-trash-alt {
     cursor: pointer;
+    display: flex;
+    text-align: center;
+    align-items: center;
 }
+
+.good {
+    background-color: #7dd181
+};
+
+
+
+
+
