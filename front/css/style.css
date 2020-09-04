@@ -1,0 +1,19 @@
+/* .navbar-burger {
+    position: absolute;
+    top: 0;
+    right: 0;
+};
+
+.pageTitle {
+    position: relative;
+}; */
+.table {
+    width: 1000px
+}
+.cell {
+    text-align: center;
+}
+
+.fa-trash-alt {
+    cursor: pointer;
+}

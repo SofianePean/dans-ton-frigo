@@ -2,11 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const multer = require('multer');
 const app = express ();
-
+const cors = require('cors')
 // on peut configurer nos CORS à la mano ou via un module NPM bien foutu
-// app.use(cors({
-//     origin: '*',
-// }));
+app.use(cors({
+    origin: '*',
+}));
 
 const PORT = process.env.PORT || 5000;
 
