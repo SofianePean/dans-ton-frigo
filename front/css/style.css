@@ -1,37 +1,34 @@
-/* .navbar-burger {
-    position: absolute;
-    top: 0;
-    right: 0;
-};
-
-.pageTitle {
-    position: relative;
-}; */
+.title_container {
+    font-size: 3rem;
+    text-align: center;
+    color: #4b88a2;
+}
 .table {
     width: 1000px;
     height: 250px;
+    margin: 3em auto;
 }
 
 .warning {
     background-color: #eab464;
-};
+}
 .cell {
     text-align: center;
 }
 .danger {
     background-color: #f64740
-};
+}
 
 .fa-trash-alt {
     cursor: pointer;
-    display: flex;
-    text-align: center;
+    /* display: flex;
     align-items: center;
+    justify-content: center; */
 }
 
 .good {
     background-color: #7dd181
-};
+}
 
 
 

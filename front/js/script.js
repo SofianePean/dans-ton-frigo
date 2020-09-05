@@ -29,8 +29,11 @@ const app = {
            const tr = document.createElement('tr');
             // Ajout de l'id sur chaque div tr
             tr.setAttribute('data-item-id', item.id);
+            // Ajout de classe "item" pour pouvoir cibler plus facilement une ligne au clique avec closest.
+            tr.classList.add('item')
             const td = document.createElement('td');
            for (const values in item) {
+
                // Exclusion du champ category
                if (values !== 'category_id') {
                    if (values === 'category') {
@@ -38,6 +41,7 @@ const app = {
                     td.classList.add('cell');
                     td.style.textAlign = 'center'
                     tr.appendChild(td);
+
                     // Récupération de la date et transformation en date FR
                    } else if (values === 'expirationdate') {
                     const td = document.createElement('td');
@@ -73,6 +77,7 @@ const app = {
             deleteItem.classList.add('far');
             deleteItem.classList.add('fa-trash-alt');
             row.appendChild(deleteItem);
+            row.addEventListener('click', app.handleDeleteButtonOnItem);
         }
     },
 
@@ -87,15 +92,33 @@ const app = {
     },
 
     checkNbDayBeforeExpiration : (nbDays,tr) => {
-        if (nbDays >10) {
+        if (nbDays >=10) {
             tr.classList.add('good');
-        } else if (nbDays <10 && nbDays >5){
+        } else if (nbDays >=5){
             tr.classList.add('warning');
         } else {
             tr.classList.add('danger');
         }
     },
 
+    handleDeleteButtonOnItem: async (event) => {
+        // Je cible l'élément cliqué
+        const target = event.target
+        // Je vais récupérer la div la plus proche avec la class item, ainsi au click sur la poubelle je vais pouvoir supprimer la ligne cliqué
+        const targetLine = target.closest('.item');
+        // Je récupère l'id de l'élément cliqué
+        const id = targetLine.getAttribute("data-item-id");
+        // Je fais appel à la BDD sur la route delete
+        const response = await fetch(`${app.baseUrl}/items/${id}`, {
+            method : 'DELETE'
+        });
+        // const response = await data.json();
+        if (response.status === 200) {
+            targetLine.remove();
+        } else {
+            alert('Impossible de supprimer l\'aliment')
+        }
+    }
 }
 
 document.addEventListener('DOMContentLoaded', app.init);
