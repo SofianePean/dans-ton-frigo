@@ -10,25 +10,118 @@
     <title>Dans ton frigo</title>
 </head>
 <body>
-    <header class="header">
-        <h1 class="title_container"> Dans ton frigo </h1>
+    <div class="container_page">
+        <header class="header">
+            <h1 class="title_container"> Dans ton frigo </h1>
+        </header>
 
-    </header>
-    <table class="table">
-        <thead>
-          <tr class="thead has-text-centered">
-              <th>Id</th>
-              <th>Nom</th>
-              <th>Date d'expiration</th>
-              <th>Quantité</th>
-              <th>Quantité par paquet</th>
-              <th>Categorie</th>
-              <th>Supprimer</th>
-          </tr>
-        </thead>
-        <tbody class="tbody">
-        </tbody>
-        </table>
+        <div class="table_description is-size-5">
+          <div class="table_description_good">
+            <div>Date de péremption de plus de 10 jours :</div>
+            <div class="table_description_color" style="background-color: #7dd181;"></div>
+          </div>
+
+          <div class="table_description_warning">
+            <div>Date de péremption entre 5 et 10 jours :</div>
+            <div class="table_description_color" style="background-color: #eab464;"></div>
+          </div>
+
+          <div class="table_description_danger">
+            <div>Date de péremption de moins de 5 jours:</div>
+            <div class="table_description_color" style="background-color: #f64740;"></div>
+          </div>
+        </div>
+
+        <table class="table">
+            <thead>
+            <tr class="thead has-text-centered">
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Date d'expiration</th>
+                <th>Quantité</th>
+                <th>Quantité par paquet</th>
+                <th>Categorie</th>
+                <th>Supprimer</th>
+            </tr>
+            </thead>
+            <tbody class="tbody">
+            </tbody>
+            </table>
+
+            <div class="has-text-centered">
+              <button class="button is-dark are-medium is-center btnItem">Ajouter un aliment</button>
+              <button class="button is-dark are-medium is-center btnCategory">Ajouter une catégorie</button>
+            </div>
+    </div>
+    <!-- Modal pour l'ajout d'un aliment -->
+    <div class="modal add_item">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <form action="" method="POST" class="form_item">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Ajouter un aliment</p>
+            <button class="delete close" aria-label="close"></button>
+          </header>
+          <section class="modal-card-body">
+            <!-- Content ... -->
+                <label class="label">Nom</label>
+                <div class="control">
+                      <input type="text" class="input" name="name" value="" placeholder="Nom de l'aliment">
+                </div>
+
+                <label class="label">Date de péremption</label>
+                <div class="control">
+                    <input type="date" class="input" name="expirationdate" value="" placeholder="Date de péremption">
+                </div>
+              
+                <label class="label">Quantité</label>
+                <div class="control">
+                    <input type="number" class="input" name="quantity" value="" placeholder="Quantité">
+                </div>
+
+                <label class="label">Quantité par paquet</label>
+                <div class="control">
+                    <input type="number" class="input" name="quantitypackage" value="" placeholder="Quantité par paquet">
+                </div>
+
+                <label for="category_select">Choisis un catégorie :</label>
+                <select name="category_id" id="option_category">
+                  <!-- options -->
+                </select>
+
+          </section>
+          <footer class="modal-card-foot">
+            <button class="button is-success">Save changes</button>
+            <button class="button close">Cancel</button>
+          </footer>
+        </form>
+        </div>
+      </div>
+      <!-- Modal pour l'ajout d'une catégorie -->
+      <div class="modal add_category">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <form action="" method="POST" class="form_category">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Ajouter une catégorie</p>
+            <button class="delete close" aria-label="close"></button>
+          </header>
+          <section class="modal-card-body">
+            <!-- Content ... -->
+                <label class="label">Nom</label>
+                <div class="control">
+                      <input type="text" class="input" name="name" value="" placeholder="Nom de la catégorie">
+                </div>
+          </section>
+          <footer class="modal-card-foot">
+            <button class="button is-success">Save changes</button>
+            <button class="button close">Cancel</button>
+          </footer>
+        </form>
+        </div>
+      </div>
+
+
         
     <script src="./js/script.js"></script>
 </body>

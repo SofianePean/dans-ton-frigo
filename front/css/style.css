@@ -30,6 +30,17 @@
     background-color: #7dd181
 }
 
+.table_description_good, .table_description_warning, .table_description_danger {
+    display: flex;
+    align-items: center;
+}
+
+.table_description_color {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+}
+
 
 
 

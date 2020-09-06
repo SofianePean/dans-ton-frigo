@@ -1,9 +1,12 @@
 const app = {
     baseUrl : `http://localhost:5000`,
+    
     init: () => {
         app.makeTheadInDom();
         app.makeDeleteItemInDom();
-        
+        app.addItem();
+        app.addCategory();
+        app.fillFieldFormSelect();
     },
 
     showMenu : () => {
@@ -17,7 +20,6 @@ const app = {
             } else {
                 navbar.classList.add('is-hidden');
             };
-            
         });
     },
 
@@ -70,13 +72,17 @@ const app = {
            tbody.appendChild(tr);
        };
     },
+
     makeDeleteItemInDom : (row) => {
         // Ajout d'un test, autrement erreur console (AppendChild of undefined)
         if(row) {
+            const td = document.createElement('td');
             const deleteItem = document.createElement('i');
             deleteItem.classList.add('far');
             deleteItem.classList.add('fa-trash-alt');
-            row.appendChild(deleteItem);
+            td.style.textAlign = 'center',
+            td.appendChild(deleteItem);
+            row.appendChild(td);
             row.addEventListener('click', app.handleDeleteButtonOnItem);
         }
     },
@@ -87,7 +93,6 @@ const app = {
         var mm = String(today.getMonth() + 1).padStart(2, '0');
         var yyyy = today.getFullYear();
         today = dd + '/' + mm + '/' + yyyy;
-        console.log(today)
         return today
     },
 
@@ -102,7 +107,8 @@ const app = {
     },
 
     handleDeleteButtonOnItem: async (event) => {
-        // Je cible l'élément cliqué
+        if(confirm('Etes vous sur ?')) {
+            // Je cible l'élément cliqué
         const target = event.target
         // Je vais récupérer la div la plus proche avec la class item, ainsi au click sur la poubelle je vais pouvoir supprimer la ligne cliqué
         const targetLine = target.closest('.item');
@@ -118,7 +124,97 @@ const app = {
         } else {
             alert('Impossible de supprimer l\'aliment')
         }
+        }
+    },
+
+    addItem : (e) => {
+        // Récupération du button pour l'ajout d'un aliment
+        const btnAddItem = document.querySelector('.btnItem');
+        btnAddItem.addEventListener('click', app.showModalAddItem);
+    },
+
+    addCategory : () => {
+        // Récupération du button pour l'ajout d'une categorie
+        const btnAddCategory = document.querySelector('.btnCategory');
+        btnAddCategory.addEventListener('click', app.showModalAddCategory);  
+    },
+
+    showModalAddItem : () => {
+        // Récupération de la modal pour l'ajout d'un aliment
+        const modalAddItem = document.querySelector('.add_item');
+        modalAddItem.classList.add('is-active');
+        // Pour chaque class .close j'enlève la class "is-active"
+        document.querySelectorAll('.close').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                modalAddItem.classList.remove('is-active')
+            })
+        })
+        // Je récupère le formulaire pour lui ajouter un preventDefault()
+        document.querySelector('.form_item').addEventListener('submit', app.handleFormItemSubmit);
+    },
+
+    showModalAddCategory: () => {
+        // Récupération de la modal pour l'ajout d'un aliment
+        const modalAddCategory = document.querySelector('.add_category');
+        modalAddCategory.classList.add('is-active');
+        // Pour chaque class .close j'enlève la class "is-active"
+        document.querySelectorAll('.close').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                modalAddCategory.classList.remove('is-active')
+            })
+        })
+        // Je récupère le formulaire pour lui ajouter un preventDefault()
+        document.querySelector('.form_category').addEventListener('submit', app.handleFormCategorySubmit);
+    },
+
+    fillFieldFormSelect : async () => {
+        // Récupération de toutes les catégories depuis la BDD
+        const getCategory = await fetch(`${app.baseUrl}/categories`);
+        const dataOrNot = await getCategory.json();
+        // Récupération du champ select dans le formulaire d'ajout d'aliment
+        const selectField = document.querySelector('#option_category');
+        for (const values of dataOrNot) {
+            const optionField = document.createElement('option');
+            // Je récupère le nom de l'aliment et je l'ajoute dans le champ option
+            optionField.textContent = values.name;
+            // Je lui rajoute aussi un data-card-id pour retrouver la catégorie à la soumission du formulaire
+            optionField.setAttribute('value', values.id)
+            selectField.appendChild(optionField);
+        }
+    },
+
+    handleFormItemSubmit : async (event) => {
+        event.preventDefault();
+        // A la soumission du formulaire je retire la class is-active sur la modal
+        document.querySelector('.add_item').classList.remove('is-active');
+        // Je créer un formData 
+        const formData = new FormData(event.target);
+        // Je passe mon formData dans le body de la requête
+        const response = await fetch(`${app.baseUrl}/items`, {
+            // on n'oublie de configurer la méthode et le corps de la requete
+            method: 'POST',
+            body: formData
+          });
+
+        const createOrNot = await response.json();
+    },
+
+    handleFormCategorySubmit : async (event) => {
+        event.preventDefault();
+        // A la soumission du formulaire je retire la class is-active sur la modal
+        document.querySelector('.add_category').classList.remove('is-active');
+        // Je créer un formData 
+        const formData = new FormData(event.target);
+        // Je passe mon formData dans le body de la requête
+        const response = await fetch(`${app.baseUrl}/categories`, {
+            // on n'oublie de configurer la méthode et le corps de la requete
+            method: 'POST',
+            body: formData
+          });
+
+        const createOrNot = await response.json();
     }
+
 }
 
 document.addEventListener('DOMContentLoaded', app.init);
