@@ -6,6 +6,7 @@ const app = {
         app.makeDeleteItemInDom();
         app.addItem();
         app.addCategory();
+        app.deleteCategory();
         app.fillFieldFormSelect();
     },
 
@@ -139,6 +140,12 @@ const app = {
         btnAddCategory.addEventListener('click', app.showModalAddCategory);  
     },
 
+    deleteCategory : () => {
+        // Récupération du button pour la suppression d'une categorie
+        const btnDeleteCategory = document.querySelector('.btnDeleteCategory');
+        btnDeleteCategory.addEventListener('click', app.showModalDeleteCategory);
+    },
+
     showModalAddItem : () => {
         // Récupération de la modal pour l'ajout d'un aliment
         const modalAddItem = document.querySelector('.add_item');
@@ -167,20 +174,39 @@ const app = {
         document.querySelector('.form_category').addEventListener('submit', app.handleFormCategorySubmit);
     },
 
+    showModalDeleteCategory: () => {
+        // Récupération de la modal pour l'ajout d'un aliment
+        const modalDeleteCategory = document.querySelector('.delete_category');
+        modalDeleteCategory.classList.add('is-active');
+        // Pour chaque class .close j'enlève la class "is-active"
+        document.querySelectorAll('.close').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                modalDeleteCategory.classList.remove('is-active')
+            })
+        })
+        // Je récupère le formulaire pour lui ajouter un preventDefault()
+        document.querySelector('.form_delete_category').addEventListener('submit', app.handleFormDeleteCategorySubmit);
+    },
+
     fillFieldFormSelect : async () => {
+        
         // Récupération de toutes les catégories depuis la BDD
         const getCategory = await fetch(`${app.baseUrl}/categories`);
         const dataOrNot = await getCategory.json();
         // Récupération du champ select dans le formulaire d'ajout d'aliment
-        const selectField = document.querySelector('#option_category');
-        for (const values of dataOrNot) {
-            const optionField = document.createElement('option');
-            // Je récupère le nom de l'aliment et je l'ajoute dans le champ option
-            optionField.textContent = values.name;
-            // Je lui rajoute aussi un data-card-id pour retrouver la catégorie à la soumission du formulaire
-            optionField.setAttribute('value', values.id)
-            selectField.appendChild(optionField);
-        }
+        const selectField = document.querySelectorAll('.option_category').forEach((fieldSelect) => {
+            for (const values of dataOrNot) {
+                const optionField = document.createElement('option');
+                // Je récupère le nom de l'aliment et je l'ajoute dans le champ option
+                optionField.textContent = values.name;
+                // Je lui rajoute aussi un data-card-id pour retrouver la catégorie à la soumission du formulaire
+                optionField.setAttribute('value', values.id);
+                // PageTransitionEvent.setAttribute('date-category-id', values.id)
+                fieldSelect.appendChild(optionField);
+            }
+        });
+    
+        
     },
 
     handleFormItemSubmit : async (event) => {
@@ -213,7 +239,24 @@ const app = {
           });
 
         const createOrNot = await response.json();
-    }
+    },
+
+    handleFormDeleteCategorySubmit: async (event) => {
+        event.preventDefault();
+        // A la soumission du formulaire je retire la class is-active sur la modal
+        document.querySelector('.delete_category').classList.remove('is-active');
+        const formData = new FormData(event.target);
+        let id;
+        for (const value of formData.values()) {
+            console.log(value)
+            id = value
+        }
+        const response = await fetch(`${app.baseUrl}/categories/${id}`, {
+            method : 'DELETE',
+            body : formData
+        })
+        const deleteCategorieOrNot = await response.json();
+    },
 
 }
 

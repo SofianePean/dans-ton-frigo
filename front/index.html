@@ -51,6 +51,7 @@
             <div class="has-text-centered">
               <button class="button is-dark are-medium is-center btnItem">Ajouter un aliment</button>
               <button class="button is-dark are-medium is-center btnCategory">Ajouter une catégorie</button>
+              <button class="button is-dark are-medium is-center btnDeleteCategory">Supprimer une catégorie</button>
             </div>
     </div>
     <!-- Modal pour l'ajout d'un aliment -->
@@ -85,7 +86,7 @@
                 </div>
 
                 <label for="category_select">Choisis un catégorie :</label>
-                <select name="category_id" id="option_category">
+                <select name="category_id" class="option_category">
                   <!-- options -->
                 </select>
 
@@ -112,6 +113,29 @@
                 <div class="control">
                       <input type="text" class="input" name="name" value="" placeholder="Nom de la catégorie">
                 </div>
+          </section>
+          <footer class="modal-card-foot">
+            <button class="button is-success">Save changes</button>
+            <button class="button close">Cancel</button>
+          </footer>
+        </form>
+        </div>
+      </div>
+      <!-- Modal pour la suppression d'une catégorie -->
+      <div class="modal delete_category">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <form action="" method="POST" class="form_delete_category">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Supprimer une catégorie</p>
+            <button class="delete close" aria-label="close"></button>
+          </header>
+          <section class="modal-card-body">
+            <!-- Content ... -->
+            <label for="category_select">Choisis un catégorie :</label>
+            <select name="category_id" class="option_category">
+              <!-- options -->
+            </select>
           </section>
           <footer class="modal-card-foot">
             <button class="button is-success">Save changes</button>
