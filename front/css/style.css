@@ -1,12 +1,23 @@
+
+.container_page {
+    background: #373B44;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #4286f4, #373B44);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #4286f4, #373B44); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    min-height: 100vh;
+    font-family: 'Open Sans', sans-serif;
+}
+
 .title_container {
     font-size: 3rem;
     text-align: center;
     color: #4b88a2;
+    /* font-weight: bold; */
 }
 .table {
     width: 1000px;
     height: 250px;
     margin: 3em auto;
+    border-radius: 5px;
 }
 
 .warning {
@@ -28,6 +39,9 @@
 
 .good {
     background-color: #7dd181
+}
+.table_description {
+    margin: auto;
 }
 
 .table_description_good, .table_description_warning, .table_description_danger {

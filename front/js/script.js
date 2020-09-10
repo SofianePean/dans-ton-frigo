@@ -1,13 +1,33 @@
 const app = {
     baseUrl : `http://localhost:5000`,
-    
+
+    container : document.querySelector('body'),
+
+
     init: () => {
+        
+        notyf = new Notyf({
+            position : {
+                x : 'right',
+                y : 'top'
+            }
+        });
         app.makeTheadInDom();
         app.makeDeleteItemInDom();
         app.addItem();
         app.addCategory();
         app.deleteCategory();
         app.fillFieldFormSelect();
+        
+    },
+
+    closeModal: (modal) => {
+        modal.querySelector('.modal')
+        const allClose = document.querySelectorAll('.close').forEach(btn => {
+            btn.addEventListener('click', () => {
+                modal.classList.remove('is-active')
+            })
+        })
     },
 
     showMenu : () => {
@@ -64,7 +84,6 @@ const app = {
                     td.style.textAlign = 'center'
                     tr.appendChild(td);
                    }  
-                   
                };
                
            }
@@ -84,7 +103,7 @@ const app = {
             td.style.textAlign = 'center',
             td.appendChild(deleteItem);
             row.appendChild(td);
-            row.addEventListener('click', app.handleDeleteButtonOnItem);
+            deleteItem.addEventListener('click', app.handleDeleteButtonOnItem);
         }
     },
 
@@ -128,9 +147,9 @@ const app = {
         }
     },
 
-    addItem : (e) => {
+    addItem : () => {
         // Récupération du button pour l'ajout d'un aliment
-        const btnAddItem = document.querySelector('.btnItem');
+        const btnAddItem = document.querySelector('#btnItem');
         btnAddItem.addEventListener('click', app.showModalAddItem);
     },
 
@@ -150,26 +169,17 @@ const app = {
         // Récupération de la modal pour l'ajout d'un aliment
         const modalAddItem = document.querySelector('.add_item');
         modalAddItem.classList.add('is-active');
-        // Pour chaque class .close j'enlève la class "is-active"
-        document.querySelectorAll('.close').forEach((btn) => {
-            btn.addEventListener('click', () => {
-                modalAddItem.classList.remove('is-active')
-            })
-        })
+        app.closeModal(modalAddItem)
+        // modalAddItem.querySelectorAll('.close').forEach(btn => modalAddItem.classList.remove('is-active'))
         // Je récupère le formulaire pour lui ajouter un preventDefault()
-        document.querySelector('.form_item').addEventListener('submit', app.handleFormItemSubmit);
+        modalAddItem.querySelector('form').addEventListener('submit', app.handleFormItemSubmit);
     },
 
     showModalAddCategory: () => {
         // Récupération de la modal pour l'ajout d'un aliment
         const modalAddCategory = document.querySelector('.add_category');
         modalAddCategory.classList.add('is-active');
-        // Pour chaque class .close j'enlève la class "is-active"
-        document.querySelectorAll('.close').forEach((btn) => {
-            btn.addEventListener('click', () => {
-                modalAddCategory.classList.remove('is-active')
-            })
-        })
+        app.closeModal(modalAddCategory);
         // Je récupère le formulaire pour lui ajouter un preventDefault()
         document.querySelector('.form_category').addEventListener('submit', app.handleFormCategorySubmit);
     },
@@ -178,18 +188,12 @@ const app = {
         // Récupération de la modal pour l'ajout d'un aliment
         const modalDeleteCategory = document.querySelector('.delete_category');
         modalDeleteCategory.classList.add('is-active');
-        // Pour chaque class .close j'enlève la class "is-active"
-        document.querySelectorAll('.close').forEach((btn) => {
-            btn.addEventListener('click', () => {
-                modalDeleteCategory.classList.remove('is-active')
-            })
-        })
+        app.closeModal(modalDeleteCategory)
         // Je récupère le formulaire pour lui ajouter un preventDefault()
         document.querySelector('.form_delete_category').addEventListener('submit', app.handleFormDeleteCategorySubmit);
     },
 
     fillFieldFormSelect : async () => {
-        
         // Récupération de toutes les catégories depuis la BDD
         const getCategory = await fetch(`${app.baseUrl}/categories`);
         const dataOrNot = await getCategory.json();
@@ -205,15 +209,15 @@ const app = {
                 fieldSelect.appendChild(optionField);
             }
         });
-    
-        
     },
 
     handleFormItemSubmit : async (event) => {
         event.preventDefault();
+        console.log('coucou')
         // A la soumission du formulaire je retire la class is-active sur la modal
         document.querySelector('.add_item').classList.remove('is-active');
-        // Je créer un formData 
+        try {
+             // Je créer un formData 
         const formData = new FormData(event.target);
         // Je passe mon formData dans le body de la requête
         const response = await fetch(`${app.baseUrl}/items`, {
@@ -221,31 +225,56 @@ const app = {
             method: 'POST',
             body: formData
           });
-
+          if (response.status === 200) {
+            notyf.success('Aliment ajouté')
+          } else {
+              throw new Error()
+          }
         const createOrNot = await response.json();
+        } catch (e) {
+            notyf.error('Merci de remplir les champs signalé en rouge !')
+        }
     },
 
     handleFormCategorySubmit : async (event) => {
         event.preventDefault();
-        // A la soumission du formulaire je retire la class is-active sur la modal
-        document.querySelector('.add_category').classList.remove('is-active');
+        
+        try {
+            // A la soumission du formulaire je retire la class is-active sur la modal
+        
         // Je créer un formData 
         const formData = new FormData(event.target);
+        console.log(formData)
         // Je passe mon formData dans le body de la requête
         const response = await fetch(`${app.baseUrl}/categories`, {
             // on n'oublie de configurer la méthode et le corps de la requete
             method: 'POST',
             body: formData
           });
-
-        const createOrNot = await response.json();
+          const createOrNot = await response.json();
+          
+          if (response.status === 200) {
+            document.querySelector('.add_category').classList.remove('is-active');
+            notyf.success('Catégorie ajoutée');
+          }
+          // sinon
+          else {
+            throw new Error();
+          }
+        } catch (e) {
+            const input = document.querySelector('.inputCategory');
+            input.classList.add('is-danger');
+            notyf.error('Vous devez ajouter un nom dans le champs !')
+        }
+        
     },
 
     handleFormDeleteCategorySubmit: async (event) => {
         event.preventDefault();
         // A la soumission du formulaire je retire la class is-active sur la modal
         document.querySelector('.delete_category').classList.remove('is-active');
-        const formData = new FormData(event.target);
+        try {
+            const formData = new FormData(event.target);
         let id;
         for (const value of formData.values()) {
             console.log(value)
@@ -256,8 +285,16 @@ const app = {
             body : formData
         })
         const deleteCategorieOrNot = await response.json();
+        if (response.status === 200) {
+            notyf.success('Catégorie supprimée !')
+        } else {
+            throw new Error()
+        }
+        } catch (e) {
+            notyf.error('Merci de selectionner une catégorie !')
+        }
+        
     },
-
 }
 
 document.addEventListener('DOMContentLoaded', app.init);

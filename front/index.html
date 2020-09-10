@@ -6,16 +6,18 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
     <script src="https://kit.fontawesome.com/d7f648ef74.js" crossorigin="anonymous"></script>
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
     <title>Dans ton frigo</title>
 </head>
 <body>
-    <div class="container_page">
+    <div class="column is-centered container_page">
         <header class="header">
-            <h1 class="title_container"> Dans ton frigo </h1>
+            <h1 class="title_container has-text-white"> Dans ton frigo </h1>
         </header>
 
-        <div class="table_description is-size-5">
+        <div class="column is-half table_description is-size-5 has-text-white is-centered">
           <div class="table_description_good">
             <div>Date de péremption de plus de 10 jours :</div>
             <div class="table_description_color" style="background-color: #7dd181;"></div>
@@ -32,7 +34,7 @@
           </div>
         </div>
 
-        <table class="table">
+        <table class="table is-hoverable">
             <thead>
             <tr class="thead has-text-centered">
                 <th>Id</th>
@@ -49,7 +51,7 @@
             </table>
 
             <div class="has-text-centered">
-              <button class="button is-dark are-medium is-center btnItem">Ajouter un aliment</button>
+              <button class="button is-dark are-medium is-center" id="btnItem">Ajouter un aliment</button>
               <button class="button is-dark are-medium is-center btnCategory">Ajouter une catégorie</button>
               <button class="button is-dark are-medium is-center btnDeleteCategory">Supprimer une catégorie</button>
             </div>
@@ -61,7 +63,7 @@
           <form action="" method="POST" class="form_item">
           <header class="modal-card-head">
             <p class="modal-card-title">Ajouter un aliment</p>
-            <button class="delete close" aria-label="close"></button>
+            <button class="delete close" type="button" aria-label="close"></button>
           </header>
           <section class="modal-card-body">
             <!-- Content ... -->
@@ -87,13 +89,15 @@
 
                 <label for="category_select">Choisis un catégorie :</label>
                 <select name="category_id" class="option_category">
+                  <option value="">--Merci de choisir une catégorie--</option>
                   <!-- options -->
                 </select>
-
+              
           </section>
+        
           <footer class="modal-card-foot">
             <button class="button is-success">Save changes</button>
-            <button class="button close">Cancel</button>
+            <button type="button" class="button close">Cancel</button>
           </footer>
         </form>
         </div>
@@ -105,18 +109,18 @@
           <form action="" method="POST" class="form_category">
           <header class="modal-card-head">
             <p class="modal-card-title">Ajouter une catégorie</p>
-            <button class="delete close" aria-label="close"></button>
+            <button class="delete close" type="button" aria-label="close"></button>
           </header>
           <section class="modal-card-body">
             <!-- Content ... -->
                 <label class="label">Nom</label>
                 <div class="control">
-                      <input type="text" class="input" name="name" value="" placeholder="Nom de la catégorie">
+                      <input type="text" class="input inputCategory" name="name" value="" placeholder="Nom de la catégorie">
                 </div>
           </section>
           <footer class="modal-card-foot">
-            <button class="button is-success">Save changes</button>
-            <button class="button close">Cancel</button>
+            <button  class="button is-success">Save changes</button>
+            <button type="button" class="button close">Cancel</button>
           </footer>
         </form>
         </div>
@@ -128,18 +132,19 @@
           <form action="" method="POST" class="form_delete_category">
           <header class="modal-card-head">
             <p class="modal-card-title">Supprimer une catégorie</p>
-            <button class="delete close" aria-label="close"></button>
+            <button class="delete close" type="button" aria-label="close"></button>
           </header>
           <section class="modal-card-body">
             <!-- Content ... -->
-            <label for="category_select">Choisis un catégorie :</label>
+            <label for="category_select">Choisis une catégorie :</label>
             <select name="category_id" class="option_category">
+              <option value="">--Merci de choisir une catégorie--</option>
               <!-- options -->
             </select>
           </section>
           <footer class="modal-card-foot">
             <button class="button is-success">Save changes</button>
-            <button class="button close">Cancel</button>
+            <button type="button" class="button close">Cancel</button>
           </footer>
         </form>
         </div>
@@ -148,5 +153,6 @@
 
         
     <script src="./js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script> 
 </body>
 </html>
